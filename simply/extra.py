@@ -87,3 +87,14 @@ class Arguments(AbsArguments):
 class Keywords(AbsKeyword):
     arg: str 
     value: AbsExpr
+
+@dataclass
+class Withitem(AbsWithitem):
+    context_expr: AbsExpr
+    optional_vars: Optional[AbsExpr]
+
+@dataclass
+class MatchCase(AbsMatchCase):
+    pattern: AbsPattern
+    guard: Optional[AbsExpr]
+    body: List[AbsStmt]

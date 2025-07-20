@@ -58,3 +58,6 @@ class AbsIdentifier:
 
 class AbsConstant:
     pass
+
+class AbsWithitem:
+    pass
