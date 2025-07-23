@@ -181,3 +181,13 @@ def _(c: ast.arguments):
 def _(c: ast.keyword):
     print("keyword")
     return Keywords(c.arg, parse(c.value))
+
+@parse.register
+def _(c: ast.alias):
+    print("Alias")
+    name = Identifier(c.name)
+    if c.asname is None:
+        asname = None 
+    else:
+        asname = Identifier(c.asname)
+    return Alias(name, asname)

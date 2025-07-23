@@ -5,7 +5,7 @@ from typing import List, Optional, Any
 @dataclass
 class FunctionDef(AbsStmt):
     name: AbsIdentifier
-    args: Arguments
+    args: AbsArguments
     body: List[AbsStmt]
     decorator_list: List[AbsExpr]
     returns: Optional[AbsExpr]
@@ -16,7 +16,7 @@ class FunctionDef(AbsStmt):
 @dataclass
 class AsyncFunctionDef(AbsStmt):
     name: AbsIdentifier
-    args: Arguments
+    args: AbsArguments
     body: List[AbsStmt]
     decorator_list: List[AbsExpr]
     returns: Optional[AbsExpr]

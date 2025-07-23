@@ -98,3 +98,8 @@ class MatchCase(AbsMatchCase):
     pattern: AbsPattern
     guard: Optional[AbsExpr]
     body: List[AbsStmt]
+
+@dataclass 
+class Alias(AbsAlias):
+    name: AbsIdentifier
+    asname: Optional[AbsIdentifier]

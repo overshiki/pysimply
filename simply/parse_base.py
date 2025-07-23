@@ -8,5 +8,6 @@ import ast
 def parse(c):
     raise ValueError("{} not supported yet".format(type(c)))
 
-
-
+@parse.register
+def _(c: None):
+    return None
