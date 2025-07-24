@@ -85,3 +85,12 @@ c = ast.parse(s)
 print(ast.dump(c))
 expr = c.body[0].value
 print(parse(expr))
+
+
+s = """
+x > 10
+"""
+c = ast.parse(s)
+print(ast.dump(c))
+expr = c.body[0].value
+print(parse(expr))

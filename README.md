@@ -19,7 +19,7 @@ simplified python `ast`, easier to manipulate and tailor for `eDSL` implementati
   - Await []
   - Yield []
   - YieldFrom []
-  - Compare []
+  - Compare [x]
   - Call [x]
   - FormattedValue []
   - JoinedStr []

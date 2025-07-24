@@ -45,3 +45,10 @@ def _(c: ast.Call):
 @parse.register
 def _(c: ast.Attribute):
     return Attribute(parse(c.value), Identifier(c.attr), parse(c.ctx))
+
+@parse.register
+def _(c: ast.Compare):
+    left = parse(c.left)
+    ops = list(map(parse, c.ops))
+    comparators = list(map(parse, c.comparators))
+    return Compare(left, ops, comparators)
