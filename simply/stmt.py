@@ -9,8 +9,8 @@ class FunctionDef(AbsStmt):
     body: List[AbsStmt]
     decorator_list: List[AbsExpr]
     returns: Optional[AbsExpr]
-    type_comment: Optional[str]
-    type_params: List[AbsTypeParam]
+    # type_comment: Optional[str]
+    # type_params: List[AbsTypeParam]
 
 
 @dataclass
@@ -20,8 +20,8 @@ class AsyncFunctionDef(AbsStmt):
     body: List[AbsStmt]
     decorator_list: List[AbsExpr]
     returns: Optional[AbsExpr]
-    type_comment: Optional[str]
-    type_params: List[AbsTypeParam]
+    # type_comment: Optional[str]
+    # type_params: List[AbsTypeParam]
 
 @dataclass
 class ClassDef(AbsStmt):

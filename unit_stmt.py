@@ -66,17 +66,72 @@ c = ast.parse(s).body[0]
 print(ast.dump(c))
 print(parse(c))
 
-# s = """
-# x = 1
-# """
-# c = ast.parse(s).body[0]
-# print(ast.dump(c))
-# # print(parse(c))
+s = """
+if x:
+  1 
+else:
+  0
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
 
-# s = """
-# def x(a: int, b: float, c: "Int", d: Ret) -> Ret:
-#     return x + 1 
-# """
-# c = ast.parse(s).body[0]
-# print(ast.dump(c))
-# # print(parse(c))
+s = """
+while x:
+  1
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
+
+s = """
+for i in range(10):
+  1
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
+
+s = """
+x = 1
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
+
+s = """
+del x
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
+
+s = """
+return x
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
+
+s = """
+return
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
+
+s = """
+def x(a: int, b: float, c: "Int", d: Ret) -> Ret:
+    return x + 1 
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
+
+s = """
+def x(a: int, b: float, c: "Int", d: Ret) -> Ret:
+    pass 
+"""
+c = ast.parse(s).body[0]
+print(ast.dump(c))
+print(parse(c))
