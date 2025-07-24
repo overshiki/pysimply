@@ -1,63 +1,78 @@
 
-class AbsStmt:
+class IsData:
+    @property
+    def sexp(self):
+        raise NotImplementedError()
+
+    def from_sexp(self):
+        raise NotImplementedError()
+
+    @property
+    def json(self):
+        raise NotImplementedError()
+
+    def from_json(self):
+        raise NotImplementedError()
+
+class AbsStmt(IsData):
     pass
 
-class AbsExpr:
+class AbsExpr(IsData):
     pass
 
-class AbsExprContext:
+class AbsExprContext(IsData):
     pass 
 
-class AbsBoolOp:
+class AbsBoolOp(IsData):
     pass 
 
-class AbsOperator:
+class AbsOperator(IsData):
     pass 
 
-class AbsUnaryOp:
+class AbsUnaryOp(IsData):
     pass 
 
-class AbsCmpop:
+class AbsCmpop(IsData):
     pass
 
-class AbsComprehension:
+class AbsComprehension(IsData):
     pass
 
-class AbsExcepthandler:
+class AbsExcepthandler(IsData):
     pass
 
-class AbsArguments:
+class AbsArguments(IsData):
     pass 
 
-class AbsArg:
+class AbsArg(IsData):
     pass 
 
-class AbsKeyword:
+class AbsKeyword(IsData):
     pass 
 
-class AbsAlias:
+class AbsAlias(IsData):
     pass 
 
-class AbsWithitem:
+class AbsWithitem(IsData):
     pass 
 
-class AbsMatchCase:
+class AbsMatchCase(IsData):
     pass 
 
-class AbsPattern:
+class AbsPattern(IsData):
     pass 
 
-class AbsTypeIgnore:
+class AbsTypeIgnore(IsData):
     pass 
 
-class AbsTypeParam:
+class AbsTypeParam(IsData):
     pass
 
-class AbsIdentifier:
+class AbsIdentifier(IsData):
     pass
 
-class AbsConstant:
+class AbsConstant(IsData):
     pass
 
-class AbsWithitem:
+class AbsWithitem(IsData):
     pass
