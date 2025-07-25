@@ -8,7 +8,7 @@ import ast
 
 @parse.register
 def _(c: ast.Name):
-    print("Name")
+    # print("Name")
     return Name(Identifier(c.id), parse(c.ctx))
 
 @parse.register

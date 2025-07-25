@@ -3,16 +3,14 @@ class IsData:
     @property
     def sexp(self):
         raise NotImplementedError()
-
-    def from_sexp(self):
-        raise NotImplementedError()
-
+    
     @property
-    def json(self):
+    def ast(self):
         raise NotImplementedError()
 
-    def from_json(self):
-        raise NotImplementedError()
+    # @property
+    # def json(self):
+    #     raise NotImplementedError()
 
 class AbsStmt(IsData):
     pass

@@ -88,7 +88,7 @@ class Assign(AbsStmt):
         return ("Assign", 
                 sexp_of_list(self.targets),
                 self.value.sexp,
-                str(self.type_comment))
+                self.type_comment)
 
 @dataclass
 class TypeAlias(AbsStmt):
@@ -129,7 +129,7 @@ class AnnAssign(AbsStmt):
                 self.target.sexp,
                 self.annotation.sexp,
                 sexp_of_optional(self.value),
-                str(self.simple))
+                self.simple)
 
 @dataclass
 class For(AbsStmt):
@@ -146,7 +146,7 @@ class For(AbsStmt):
                 self.iter.sexp,
                 sexp_of_list(self.body),
                 sexp_of_list(self.orelse),
-                str(self.type_comment))
+                self.type_comment)
 
 @dataclass
 class AsyncFor(AbsStmt):
@@ -163,7 +163,7 @@ class AsyncFor(AbsStmt):
                 self.iter.sexp,
                 sexp_of_list(self.body),
                 sexp_of_list(self.orelse),
-                str(self.type_comment))
+                self.type_comment)
 
 @dataclass
 class While(AbsStmt):
@@ -202,7 +202,7 @@ class With(AbsStmt):
         return ("With",
                 sexp_of_list(self.items),
                 sexp_of_list(self.body),
-                str(self.type_comment))
+                self.type_comment)
 
 @dataclass
 class AsyncWith(AbsStmt):
@@ -215,7 +215,7 @@ class AsyncWith(AbsStmt):
         return ("AsyncWith",
                 sexp_of_list(self.items),
                 sexp_of_list(self.body),
-                str(self.type_comment))
+                self.type_comment)
 
 @dataclass
 class Match(AbsStmt):
@@ -246,6 +246,14 @@ class Try(AbsStmt):
     orelse: List[AbsStmt]
     finalbody: List[AbsStmt]
 
+    @property
+    def sexp(self):
+        return ("Try",
+                sexp_of_list(self.body),
+                sexp_of_list(self.handlers),
+                sexp_of_list(self.orelse),
+                sexp_of_list(self.finalbody))
+
 @dataclass
 class TryStar(AbsStmt):
     body: List[AbsStmt]
@@ -253,14 +261,32 @@ class TryStar(AbsStmt):
     orelse: List[AbsStmt]
     finalbody: List[AbsStmt]
 
+    @property
+    def sexp(self):
+        return ("TryStar",
+                sexp_of_list(self.body),
+                sexp_of_list(self.handlers),
+                sexp_of_list(self.orelse),
+                sexp_of_list(self.finalbody))
+
 @dataclass
 class Assert(AbsStmt):
     test: AbsExpr
     msg: Optional[AbsExpr]
 
+    @property
+    def sexp(self):
+        return ("Assert",
+                self.test.sexp,
+                sexp_of_optional(self.msg))
+
 @dataclass
 class Import(AbsStmt):
     names: AbsAlias
+
+    @property
+    def sexp(self):
+        return ("Import", self.names.sexp)
 
 @dataclass
 class ImportFrom(AbsStmt):
@@ -268,23 +294,51 @@ class ImportFrom(AbsStmt):
     names: List[AbsAlias]
     level: Optional[int]
 
+    @property
+    def sexp(self):
+        return ("ImportFrom",
+                sexp_of_optional(self.module),
+                sexp_of_list(self.names),
+                self.level)
+
 @dataclass
 class Global(AbsStmt):
     names: List[AbsIdentifier]
+
+    @property
+    def sexp(self):
+        return ("Global", sexp_of_list(self.names))
 
 @dataclass
 class Nonlocal(AbsStmt):
     names: List[AbsIdentifier]
 
+    @property
+    def sexp(self):
+        return ("Global", sexp_of_list(self.names))
+
 @dataclass
 class Expr(AbsStmt):
     value: AbsExpr
 
+    @property
+    def sexp(self):
+        return ("Expr", self.value.sexp)
+
 class Pass(AbsStmt):
-    pass 
+
+    @property
+    def sexp(self):
+        return ("Pass")
 
 class Break(AbsStmt):
-    pass 
+
+    @property
+    def sexp(self):
+        return ("Break")
 
 class Continue(AbsStmt):
-    pass 
+
+    @property
+    def sexp(self):
+        return ("Continue")

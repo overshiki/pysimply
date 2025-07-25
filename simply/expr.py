@@ -199,7 +199,7 @@ class FormattedValue(AbsExpr):
         fs = "None" if self.format_spec is None else self.format_spec.sexp
         return ("FormattedValue",
                 self.value.sexp,
-                str(self.conversion),
+                self.conversion,
                 fs)
 
 @dataclass
@@ -217,7 +217,7 @@ class Constant(AbsExpr):
 
     @property
     def sexp(self):
-        return ("Constant", str(self.value), str(self.kind))
+        return ("Constant", self.value, self.kind)
 
 @dataclass
 class Attribute(AbsExpr):
