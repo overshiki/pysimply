@@ -76,3 +76,12 @@ class AbsConstant(IsData):
 
 class AbsWithitem(IsData):
     pass
+
+def sexp_of_list(values):
+    return tuple(map(lambda x:x.sexp, values))
+
+def sexp_of_optional(value):
+    if value is None:
+        return None
+    else:
+        return value.sexp

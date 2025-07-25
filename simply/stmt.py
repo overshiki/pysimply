@@ -12,6 +12,15 @@ class FunctionDef(AbsStmt):
     # type_comment: Optional[str]
     # type_params: List[AbsTypeParam]
 
+    @property
+    def sexp(self):
+        return ("FunctionDef",
+                self.name.sexp,
+                self.args.sexp,
+                sexp_of_list(self.body),
+                sexp_of_list(self.decorator_list),
+                sexp_of_optional(self.returns))
+
 
 @dataclass
 class AsyncFunctionDef(AbsStmt):
@@ -23,6 +32,15 @@ class AsyncFunctionDef(AbsStmt):
     # type_comment: Optional[str]
     # type_params: List[AbsTypeParam]
 
+    @property
+    def sexp(self):
+        return ("AsyncFunctionDef",
+                self.name.sexp,
+                self.args.sexp,
+                sexp_of_list(self.body),
+                sexp_of_list(self.decorator_list),
+                sexp_of_optional(self.returns))  
+
 @dataclass
 class ClassDef(AbsStmt):
     name: AbsIdentifier
@@ -32,13 +50,32 @@ class ClassDef(AbsStmt):
     decorator_list: List[AbsExpr]
     type_params: List[AbsTypeParam]
 
+    @property
+    def sexp(self):
+        return ("ClassDef",
+                self.name.sexp,
+                sexp_of_list(self.bases),
+                sexp_of_list(self.keywords),
+                sexp_of_list(self.body),
+                sexp_of_list(self.decorator_list),
+                sexp_of_list(self.type_params))
+
 @dataclass
 class Return(AbsStmt):
     value: Optional[AbsExpr]
 
+    @property
+    def sexp(self):
+        return ("Return",
+                sexp_of_optional(self.value))
+
 @dataclass
 class Delete(AbsStmt):
     targets: List[AbsExpr]
+
+    @property
+    def sexp(self):
+        return ("Delete", sexp_of_list(self.targets))
 
 @dataclass
 class Assign(AbsStmt):
@@ -46,11 +83,25 @@ class Assign(AbsStmt):
     value: AbsExpr
     type_comment: Optional[str]
 
+    @property
+    def sexp(self):
+        return ("Assign", 
+                sexp_of_list(self.targets),
+                self.value.sexp,
+                str(self.type_comment))
+
 @dataclass
 class TypeAlias(AbsStmt):
     name: AbsExpr
     type_params: List[AbsTypeParam]
     value: AbsExpr
+
+    @property
+    def sexp(self):
+        return ("TypeAlias",
+                self.name.sexp,
+                sexp_of_list(self.type_params),
+                self.value.sexp)
 
 @dataclass
 class AugAssign(AbsStmt):
@@ -58,12 +109,27 @@ class AugAssign(AbsStmt):
     op: AbsOperator
     value: AbsExpr 
 
+    @property
+    def sexp(self):
+        return ("AugAssign",
+                self.target.sexp,
+                self.op.sexp,
+                self.value.sexp)
+
 @dataclass
 class AnnAssign(AbsStmt):
     target: AbsExpr 
     annotation: AbsExpr 
     value: Optional[AbsExpr]
     simple: int 
+
+    @property
+    def sexp(self):
+        return ("AnnAssign",
+                self.target.sexp,
+                self.annotation.sexp,
+                sexp_of_optional(self.value),
+                str(self.simple))
 
 @dataclass
 class For(AbsStmt):
@@ -73,6 +139,15 @@ class For(AbsStmt):
     orelse: List[AbsStmt]
     type_comment: Optional[str]
 
+    @property
+    def sexp(self):
+        return ("For",
+                self.target.sexp,
+                self.iter.sexp,
+                sexp_of_list(self.body),
+                sexp_of_list(self.orelse),
+                str(self.type_comment))
+
 @dataclass
 class AsyncFor(AbsStmt):
     target: AbsExpr
@@ -81,11 +156,27 @@ class AsyncFor(AbsStmt):
     orelse: List[AbsStmt]
     type_comment: Optional[str]
 
+    @property
+    def sexp(self):
+        return ("AsyncFor",
+                self.target.sexp,
+                self.iter.sexp,
+                sexp_of_list(self.body),
+                sexp_of_list(self.orelse),
+                str(self.type_comment))
+
 @dataclass
 class While(AbsStmt):
     test: AbsExpr
     body: List[AbsStmt]
     orelse: List[AbsStmt]
+
+    @property
+    def sexp(self):
+        return ("While",
+                self.test.sexp,
+                sexp_of_list(self.body),
+                sexp_of_list(self.orelse))
 
 @dataclass
 class If(AbsStmt):
@@ -93,11 +184,25 @@ class If(AbsStmt):
     body: List[AbsStmt]
     orelse: List[AbsStmt]
 
+    @property
+    def sexp(self):
+        return ("If",
+                self.test.sexp,
+                sexp_of_list(self.body),
+                sexp_of_list(self.orelse))
+
 @dataclass
 class With(AbsStmt):
     items: List[AbsWithitem]
     body: List[AbsStmt]
     type_comment: Optional[str]
+
+    @property
+    def sexp(self):
+        return ("With",
+                sexp_of_list(self.items),
+                sexp_of_list(self.body),
+                str(self.type_comment))
 
 @dataclass
 class AsyncWith(AbsStmt):
@@ -105,15 +210,34 @@ class AsyncWith(AbsStmt):
     body: List[AbsStmt]
     type_comment: Optional[str]
 
+    @property
+    def sexp(self):
+        return ("AsyncWith",
+                sexp_of_list(self.items),
+                sexp_of_list(self.body),
+                str(self.type_comment))
+
 @dataclass
 class Match(AbsStmt):
     subject: AbsExpr
     cases: List[AbsMatchCase]
 
+    @property
+    def sexp(self):
+        return ("Match",
+                self.subject.sexp,
+                sexp_of_list(self.cases))
+
 @dataclass
 class Raise(AbsStmt):
     exc: Optional[AbsExpr]
     cause: Optional[AbsExpr]
+
+    @property
+    def sexp(self):
+        return ("Raise",
+                sexp_of_optional(self.exc),
+                sexp_of_optional(self.cause))
 
 @dataclass
 class Try(AbsStmt):
