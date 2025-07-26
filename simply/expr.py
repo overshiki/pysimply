@@ -3,6 +3,21 @@ from dataclasses import dataclass
 from typing import List, Optional, Any
 
 @dataclass
+class Name(AbsExpr):
+    id: AbsIdentifier
+    ctx: AbsExprContext
+
+    @property
+    def sexp(self):
+        return ("Name",
+                self.id.sexp,
+                self.ctx.sexp)
+
+    @property
+    def ast(self):
+        pass
+
+@dataclass
 class BoolOp(AbsExpr):
     op: AbsBoolOp
     values: List[AbsExpr]
@@ -12,6 +27,11 @@ class BoolOp(AbsExpr):
         return ("BoolOp", 
                 self.op.sexp, 
                 sexp_of_list(self.values))
+
+    @property
+    def ast(self):
+        values = list(map(lambda x:x.ast, self.values))
+        return ast.BoolOp(self.op.ast, values)
 
 @dataclass
 class NamedExpr(AbsExpr):
@@ -254,17 +274,6 @@ class Starred(AbsExpr):
     def sexp(self):
         return ("Starred",
                 self.value.sexp,
-                self.ctx.sexp)
-
-@dataclass
-class Name(AbsExpr):
-    id: AbsIdentifier
-    ctx: AbsExprContext
-
-    @property
-    def sexp(self):
-        return ("Name",
-                self.id.sexp,
                 self.ctx.sexp)
 
 @dataclass
