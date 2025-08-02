@@ -1,6 +1,7 @@
 from .abstract import *
 from dataclasses import dataclass
 from typing import List, Optional, Any
+import ast
 
 @dataclass
 class FunctionDef(AbsStmt):
@@ -20,6 +21,18 @@ class FunctionDef(AbsStmt):
                 sexp_of_list(self.body),
                 sexp_of_list(self.decorator_list),
                 sexp_of_optional(self.returns))
+
+    @property
+    def ast(self):
+        body = ast_of_list(self.body)
+        decorator_list = ast_of_list(self.decorator_list)
+        returns = ast_of_optional(self.returns)
+        return ast.FunctionDef(
+                      self.name.ast, 
+                      self.args.ast,
+                      body, 
+                      decorator_list, 
+                      returns)
 
 
 @dataclass
@@ -41,6 +54,18 @@ class AsyncFunctionDef(AbsStmt):
                 sexp_of_list(self.decorator_list),
                 sexp_of_optional(self.returns))  
 
+    @property
+    def ast(self):
+        body = ast_of_list(self.body)
+        decorator_list = ast_of_list(self.decorator_list)
+        returns = ast_of_optional(self.returns)
+        return ast.AsyncFunctionDef(
+                      self.name.ast, 
+                      self.args.ast,
+                      body, 
+                      decorator_list, 
+                      returns)
+
 @dataclass
 class ClassDef(AbsStmt):
     name: AbsIdentifier
@@ -60,6 +85,16 @@ class ClassDef(AbsStmt):
                 sexp_of_list(self.decorator_list),
                 sexp_of_list(self.type_params))
 
+    @property
+    def ast(self):
+        return ast.ClassDef(
+            self.name.ast,
+            ast_of_list(self.bases),
+            ast_of_list(self.keywords),
+            ast_of_list(self.body),
+            ast_of_list(self.decorator_list),
+            ast_of_list(self.type_params))
+
 @dataclass
 class Return(AbsStmt):
     value: Optional[AbsExpr]
@@ -69,6 +104,10 @@ class Return(AbsStmt):
         return ("Return",
                 sexp_of_optional(self.value))
 
+    @property
+    def ast(self):
+        return ast.Return(ast_of_optional(self.value))
+
 @dataclass
 class Delete(AbsStmt):
     targets: List[AbsExpr]
@@ -76,6 +115,10 @@ class Delete(AbsStmt):
     @property
     def sexp(self):
         return ("Delete", sexp_of_list(self.targets))
+
+    @property
+    def ast(self):
+        return ast.Delete(ast_of_list(self.targets))
 
 @dataclass
 class Assign(AbsStmt):
@@ -90,6 +133,13 @@ class Assign(AbsStmt):
                 self.value.sexp,
                 self.type_comment)
 
+    @property
+    def ast(self):
+        return ast.Assign(
+            ast_of_list(self.targets), 
+            self.value.ast, 
+            self.type_comment)
+
 @dataclass
 class TypeAlias(AbsStmt):
     name: AbsExpr
@@ -103,6 +153,13 @@ class TypeAlias(AbsStmt):
                 sexp_of_list(self.type_params),
                 self.value.sexp)
 
+    @property
+    def ast(self):
+        return ast.TypeAlias(
+            self.name.ast, 
+            ast_of_list(self.type_params), 
+            self.value.ast)
+
 @dataclass
 class AugAssign(AbsStmt):
     target: AbsExpr 
@@ -115,6 +172,10 @@ class AugAssign(AbsStmt):
                 self.target.sexp,
                 self.op.sexp,
                 self.value.sexp)
+
+    @property
+    def ast(self):
+        return ast.AugAssign(self.target.ast, self.op.ast, self.value.ast)
 
 @dataclass
 class AnnAssign(AbsStmt):
@@ -130,6 +191,14 @@ class AnnAssign(AbsStmt):
                 self.annotation.sexp,
                 sexp_of_optional(self.value),
                 self.simple)
+
+    @property
+    def ast(self):
+        return ast.AnnAssign(
+            self.target.ast, 
+            self.annotation.ast, 
+            ast_of_optional(self.value), 
+            self.simple)
 
 @dataclass
 class For(AbsStmt):
@@ -148,6 +217,15 @@ class For(AbsStmt):
                 sexp_of_list(self.orelse),
                 self.type_comment)
 
+    @property
+    def ast(self):
+        return ast.For(
+            self.target.ast, 
+            self.iter.ast, 
+            ast_of_list(self.body), 
+            ast_of_list(self.orelse), 
+            self.type_comment)
+
 @dataclass
 class AsyncFor(AbsStmt):
     target: AbsExpr
@@ -165,6 +243,15 @@ class AsyncFor(AbsStmt):
                 sexp_of_list(self.orelse),
                 self.type_comment)
 
+    @property
+    def ast(self):
+        return ast.AsyncFor(
+            self.target.ast, 
+            self.iter.ast, 
+            ast_of_list(self.body), 
+            ast_of_list(self.orelse), 
+            self.type_comment)
+
 @dataclass
 class While(AbsStmt):
     test: AbsExpr
@@ -177,6 +264,13 @@ class While(AbsStmt):
                 self.test.sexp,
                 sexp_of_list(self.body),
                 sexp_of_list(self.orelse))
+
+    @property
+    def ast(self):
+        return ast.While(
+            self.test.ast, 
+            ast_of_list(self.body), 
+            ast_of_list(self.orelse))
 
 @dataclass
 class If(AbsStmt):
@@ -191,6 +285,13 @@ class If(AbsStmt):
                 sexp_of_list(self.body),
                 sexp_of_list(self.orelse))
 
+    @property
+    def ast(self):
+        return ast.If(
+            self.test.ast, 
+            ast_of_list(self.body), 
+            ast_of_list(self.orelse))
+
 @dataclass
 class With(AbsStmt):
     items: List[AbsWithitem]
@@ -203,6 +304,13 @@ class With(AbsStmt):
                 sexp_of_list(self.items),
                 sexp_of_list(self.body),
                 self.type_comment)
+
+    @property
+    def ast(self):
+        return ast.With(
+            ast_of_list(self.items), 
+            ast_of_list(self.body), 
+            self.type_comment)
 
 @dataclass
 class AsyncWith(AbsStmt):
@@ -217,6 +325,13 @@ class AsyncWith(AbsStmt):
                 sexp_of_list(self.body),
                 self.type_comment)
 
+    @property
+    def ast(self):
+        return ast.AsyncWith(
+            ast_of_list(self.items), 
+            ast_of_list(self.body), 
+            self.type_comment)
+
 @dataclass
 class Match(AbsStmt):
     subject: AbsExpr
@@ -228,6 +343,12 @@ class Match(AbsStmt):
                 self.subject.sexp,
                 sexp_of_list(self.cases))
 
+    @property
+    def ast(self):
+        return ast.Match(
+            self.subject.ast, 
+            ast_of_list(self.cases))
+
 @dataclass
 class Raise(AbsStmt):
     exc: Optional[AbsExpr]
@@ -238,6 +359,12 @@ class Raise(AbsStmt):
         return ("Raise",
                 sexp_of_optional(self.exc),
                 sexp_of_optional(self.cause))
+
+    @property
+    def ast(self):
+        return ast.Raise(
+            ast_of_optional(self.exc), 
+            ast_of_optional(self.cause))
 
 @dataclass
 class Try(AbsStmt):
@@ -254,6 +381,14 @@ class Try(AbsStmt):
                 sexp_of_list(self.orelse),
                 sexp_of_list(self.finalbody))
 
+    @property
+    def ast(self):
+        return ast.Try(
+            ast_of_list(self.body), 
+            ast_of_list(self.handlers), 
+            ast_of_list(self.orelse), 
+            ast_of_list(self.finalbody))
+
 @dataclass
 class TryStar(AbsStmt):
     body: List[AbsStmt]
@@ -269,6 +404,14 @@ class TryStar(AbsStmt):
                 sexp_of_list(self.orelse),
                 sexp_of_list(self.finalbody))
 
+    @property
+    def ast(self):
+        return ast.TryStar(
+            ast_of_list(self.body), 
+            ast_of_list(self.handlers), 
+            ast_of_list(self.orelse), 
+            ast_of_list(self.finalbody))
+
 @dataclass
 class Assert(AbsStmt):
     test: AbsExpr
@@ -280,6 +423,12 @@ class Assert(AbsStmt):
                 self.test.sexp,
                 sexp_of_optional(self.msg))
 
+    @property
+    def ast(self):
+        return ast.Assert(
+            self.test.ast, 
+            ast_of_optional(self.msg))
+
 @dataclass
 class Import(AbsStmt):
     names: AbsAlias
@@ -287,6 +436,10 @@ class Import(AbsStmt):
     @property
     def sexp(self):
         return ("Import", self.names.sexp)
+
+    @property
+    def ast(self):
+        return ast.Import(ast_of_list(self.names))
 
 @dataclass
 class ImportFrom(AbsStmt):
@@ -301,6 +454,13 @@ class ImportFrom(AbsStmt):
                 sexp_of_list(self.names),
                 self.level)
 
+    @property
+    def ast(self):
+        return ast.ImportFrom(
+            ast_of_optional(self.module), 
+            ast_of_list(self.names), 
+            self.level)
+
 @dataclass
 class Global(AbsStmt):
     names: List[AbsIdentifier]
@@ -308,6 +468,10 @@ class Global(AbsStmt):
     @property
     def sexp(self):
         return ("Global", sexp_of_list(self.names))
+
+    @property
+    def ast(self):
+        return ast.Global(ast_of_list(self.names))
 
 @dataclass
 class Nonlocal(AbsStmt):
@@ -317,6 +481,10 @@ class Nonlocal(AbsStmt):
     def sexp(self):
         return ("Global", sexp_of_list(self.names))
 
+    @property
+    def ast(self):
+        return ast.Nonlocal(ast_of_list(self.names))
+
 @dataclass
 class Expr(AbsStmt):
     value: AbsExpr
@@ -325,11 +493,19 @@ class Expr(AbsStmt):
     def sexp(self):
         return ("Expr", self.value.sexp)
 
+    @property
+    def ast(self):
+        return ast.Expr(self.value.ast)
+
 class Pass(AbsStmt):
 
     @property
     def sexp(self):
         return ("Pass")
+
+    @property
+    def ast(self):
+        return ast.Pass()
 
 class Break(AbsStmt):
 
@@ -337,8 +513,16 @@ class Break(AbsStmt):
     def sexp(self):
         return ("Break")
 
+    @property
+    def ast(self):
+        return ast.Break()
+
 class Continue(AbsStmt):
 
     @property
     def sexp(self):
         return ("Continue")
+
+    @property
+    def ast(self):
+        return ast.Continue()

@@ -2,10 +2,16 @@
 class IsData:
     @property
     def sexp(self):
+        '''
+        generating sexp repr
+        '''
         raise NotImplementedError()
     
     @property
     def ast(self):
+        '''
+        generating python-ast
+        '''
         raise NotImplementedError()
 
     # @property
@@ -83,3 +89,12 @@ def sexp_of_optional(value):
         return None
     else:
         return value.sexp
+
+def ast_of_list(values):
+    return list(map(lambda x:x.ast, values))
+
+def ast_of_optional(value):
+    if value is None:
+        return None 
+    else:
+        return value.ast

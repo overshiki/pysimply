@@ -173,6 +173,7 @@ def _(c: ast.arg):
 
 @parse.register
 def _(c: ast.arguments):
+    # TODO, support all parameters in ast.arguments
     # print("arguments")
     args = list(map(parse, c.args))
     return Arguments(args)
