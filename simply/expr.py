@@ -13,6 +13,13 @@ class Name(AbsExpr):
         return ("Name",
                 self.id.sexp,
                 self.ctx.sexp)
+    
+    @property 
+    def json(self):
+        return {"Name": 
+            {"id": self.id.json, 
+             "ctx": self.ctx.json}
+        }
 
     @property
     def ast(self):
@@ -30,6 +37,12 @@ class BoolOp(AbsExpr):
                 sexp_of_list(self.values))
 
     @property
+    def json(self):
+        return {"BoolOp": {"op": self.op.json, 
+                            "value": json_of_list(self.values)}
+        }
+
+    @property
     def ast(self):
         values = ast_of_list(self.values)
         return ast.BoolOp(self.op.ast, values)
@@ -44,6 +57,12 @@ class NamedExpr(AbsExpr):
         return ("NamedExpr",
                 self.target.sexp,
                 self.value.sexp)
+
+    @property
+    def json(self):
+        return {"NamedExpr": {"target": self.target.json, 
+                              "NamedExpr": self.value.sexp}
+        }
 
     @property
     def ast(self):
@@ -63,6 +82,13 @@ class BinOp(AbsExpr):
                 self.right.sexp)
 
     @property
+    def json(self):
+        return {"BinOp": {"left": self.left.json,
+                          "op": self.op.json,
+                          "right": self.right.json}
+        }
+
+    @property
     def ast(self):
         return ast.BinOp(self.left.ast, self.op.ast, self.right.ast)
 
@@ -78,6 +104,12 @@ class UnaryOp(AbsExpr):
                 self.operand.sexp)
 
     @property
+    def json(self):
+        return {"UnaryOp": {"op": self.op.json,
+                            "operand": self.operand.json}
+        }
+
+    @property
     def ast(self):
         return ast.UnaryOp(self.op.ast, self.operand.ast)
 
@@ -91,6 +123,12 @@ class Lambda(AbsExpr):
         return ("Lambda",
                 self.args.sexp,
                 self.body.sexp)
+
+    @property
+    def json(self):
+        return {"Lambda": {"args": self.args.json,
+                           "body": self.body.json}
+        }
 
     @property
     def ast(self):
@@ -110,6 +148,13 @@ class IfExp(AbsExpr):
                 self.orelse.sexp)
 
     @property
+    def json(self):
+        return {"IfExp": {"test": self.test.json,
+                          "body": self.body.json,
+                          "orelse": self.orelse.json}
+        }
+
+    @property
     def ast(self):
         return ast.IfExp(self.test.ast, self.body.ast, self.orelse.ast)
 
@@ -125,6 +170,12 @@ class ADict(AbsExpr):
                 sexp_of_list(self.values))
 
     @property
+    def json(self):
+        return {"Dict": {"keys": json_of_list(self.keys),
+                         "values": json_of_list(self.values)}
+        }
+
+    @property
     def ast(self):
         keys = ast_of_list(self.keys)
         values = ast_of_list(self.values)
@@ -137,6 +188,10 @@ class Set(AbsExpr):
     @property
     def sexp(self):
         return ("Set", sexp_of_list(self.elts))
+
+    @property
+    def json(self):
+        return {"Set": json_of_list(self.elts)}
 
     @property
     def ast(self):
@@ -155,6 +210,13 @@ class ListComp(AbsExpr):
                 sexp_of_list(self.generators))
 
     @property
+    def json(self):
+        return {"ListComp": {
+            "elt": self.elt.json,
+            "generators": json_of_list(self.generators)
+        }}
+
+    @property
     def ast(self):
         generators = ast_of_list(self.generators)
         return ast.ListComp(self.elt.ast, generators)
@@ -169,6 +231,13 @@ class SetComp(AbsExpr):
         return ("SetComp",
                 self.elt.sexp,
                 sexp_of_list(self.generators))
+
+    @property
+    def json(self):
+        return {"SetComp": {
+            "elt": self.elt.json,
+            "generators": json_of_list(self.generators)
+        }}
 
     @property
     def ast(self):
@@ -189,6 +258,14 @@ class DictComp(AbsExpr):
                 sexp_of_list(self.generators))
 
     @property
+    def json(self):
+        return {"DictComp": {
+            "key": self.key.json,
+            "value": self.value.json,
+            "generators": json_of_list(self.generators)
+        }}
+
+    @property
     def ast(self):
         generators = ast_of_list(self.generators)
         return ast.DictComp(self.key.ast, self.value.ast, generators)
@@ -205,6 +282,13 @@ class GeneratorExp(AbsExpr):
                 sexp_of_list(self.generators))
 
     @property
+    def json(self):
+        return {"GeneratorExp": {
+            "elt": self.elt.json,
+            "generators": json_of_list(self.generators)
+        }}
+
+    @property
     def ast(self):
         generators = ast_of_list(self.generators)
         return ast.GeneratorExp(self.elt.ast, generators)
@@ -216,6 +300,10 @@ class Await(AbsExpr):
     @property
     def sexp(self):
         return ("Await", self.value.sexp)
+
+    @property
+    def json(self):
+        return {"Await": self.value.json}
 
     @property
     def ast(self):
@@ -230,6 +318,10 @@ class Yield(AbsExpr):
         return ("Yield", sexp_of_optional(self.value))
 
     @property
+    def json(self):
+        return {"Yield": json_of_optional(self.value)}
+
+    @property
     def ast(self):
         return ast.Yield(ast_of_optional(self.value))
 
@@ -240,6 +332,10 @@ class YieldFrom(AbsExpr):
     @property
     def sexp(self):
         return ("YieldFrom", self.value.sexp)
+
+    @property
+    def json(self):
+        return {"YieldFrom": self.value.json}
 
     @property
     def ast(self):
@@ -259,6 +355,14 @@ class Compare(AbsExpr):
                 sexp_of_list(self.comparators))
 
     @property
+    def json(self):
+        return {"Compare": {
+            "left": self.left.json,
+            "ops": json_of_list(self.ops),
+            "comparators": json_of_list(self.comparators)
+        }}
+
+    @property
     def ast(self):
         ops = ast_of_list(self.ops)
         comparators = ast_of_list(self.comparators)
@@ -276,6 +380,14 @@ class Call(AbsExpr):
                 self.func.sexp,
                 sexp_of_list(self.args),
                 sexp_of_list(self.keywords))
+
+    @property
+    def json(self):
+        return {"Call": {
+            "func": self.func.json,
+            "args": json_of_list(self.args),
+            "keywords": json_of_list(self.keywords)
+        }}
 
     @property
     def ast(self):
@@ -298,6 +410,16 @@ class FormattedValue(AbsExpr):
                 fs)
 
     @property
+    def json(self):
+        # TODO: use json_of_optional ?
+        fs = "None" if self.format_spec is None else self.format_spec.json 
+        return {"FormattedValue": {
+            "value": self.value.json,
+            "conversion": self.conversion.json,
+            "format_spec": fs
+        }}
+
+    @property
     def ast(self):
         format_spec = ast_of_optional(self.format_spec)
         return ast.FormattedValue(self.value.ast, self.conversion, format_spec)
@@ -309,6 +431,10 @@ class JoinedStr(AbsExpr):
     @property
     def sexp(self):
         return ("JoinedStr", sexp_of_list(self.values))
+
+    @property
+    def json(self):
+        return {"JoinedStr": json_of_list(self.values)}
 
     @property
     def ast(self):
@@ -323,6 +449,13 @@ class Constant(AbsExpr):
     @property
     def sexp(self):
         return ("Constant", self.value, self.kind)
+
+    @property
+    def json(self):
+        return {"Constant": {
+            "value": self.value,
+            "kind": self.kind
+        }}
 
     @property
     def ast(self):
@@ -342,6 +475,14 @@ class Attribute(AbsExpr):
                 self.ctx.sexp)
 
     @property
+    def json(self):
+        return {"Attribute": {
+            "value": self.value.json,
+            "attr": self.attr.json,
+            "ctx": self.ctx.json
+        }}
+
+    @property
     def ast(self):
         return ast.Attribute(self.value.ast, self.attr.ast, self.ctx.ast)
 
@@ -359,6 +500,14 @@ class Subscript(AbsExpr):
                 self.ctx.sexp)
 
     @property
+    def json(self):
+        return {"Subscript": {
+            "value": self.value.json,
+            "aslice": self.aslice.json,
+            "ctx": self.ctx.json
+        }}
+
+    @property
     def ast(self):
         return ast.Subscript(self.value.ast, self.aslice.ast, self.ctx.ast)
 
@@ -374,6 +523,13 @@ class Starred(AbsExpr):
                 self.ctx.sexp)
 
     @property
+    def json(self):
+        return {"Starred": {
+            "value": self.value.json,
+            "ctx": self.ctx.json
+        }}
+
+    @property
     def ast(self):
         return ast.Starred(self.value.ast, self.ctx.ast)
 
@@ -387,6 +543,13 @@ class AList(AbsExpr):
         return ("List",
                 sexp_of_list(self.elts),
                 self.ctx.sexp)
+
+    @property
+    def json(self):
+        return {"List": {
+            "elts": json_of_list(self.elts),
+            "ctx": self.ctx.json
+        }}
 
     @property
     def ast(self):
@@ -405,6 +568,13 @@ class ATuple(AbsExpr):
                 self.ctx.sexp)
 
     @property
+    def json(self):
+        return {"Tuple": {
+            "elts": json_of_list(self.elts),
+            "ctx": self.ctx.json
+        }}
+
+    @property
     def ast(self):
         elts = ast_of_list(self.elts)
         return ast.Tuple(elts, self.ctx.ast)
@@ -421,6 +591,14 @@ class ASlice(AbsExpr):
                 sexp_of_optional(self.lower),
                 sexp_of_optional(self.upper),
                 sexp_of_optional(self.step))
+
+    @property
+    def json(self):
+        return {"Slice": {
+            "lower": json_of_optional(self.lower),
+            "upper": json_of_optional(self.upper),
+            "step": json_of_optional(self.step)
+        }}
 
     @property
     def ast(self):

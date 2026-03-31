@@ -23,6 +23,16 @@ class FunctionDef(AbsStmt):
                 sexp_of_optional(self.returns))
 
     @property
+    def json(self):
+        return {"FunctionDef": {
+            "name": self.name.json,
+            "args": self.args.json,
+            "body": json_of_list(self.body),
+            "decorator_list": json_of_list(self.decorator_list),
+            "returns": json_of_optional(self.returns)
+        }}
+
+    @property
     def ast(self):
         body = ast_of_list(self.body)
         decorator_list = ast_of_list(self.decorator_list)
@@ -53,6 +63,16 @@ class AsyncFunctionDef(AbsStmt):
                 sexp_of_list(self.body),
                 sexp_of_list(self.decorator_list),
                 sexp_of_optional(self.returns))  
+
+    @property
+    def json(self):
+        return {"AsyncFunctionDef": {
+            "name": self.name.json,
+            "args": self.args.json,
+            "body": json_of_list(self.body),
+            "decorator_list": json_of_list(self.decorator_list),
+            "returns": json_of_optional(self.returns)
+        }}
 
     @property
     def ast(self):
@@ -86,6 +106,16 @@ class ClassDef(AbsStmt):
                 sexp_of_list(self.type_params))
 
     @property
+    def json(self):
+        return {"ClassDef": {
+            "bases": json_of_list(self.bases),
+            "keywords": json_of_list(self.keywords),
+            "body": json_of_list(self.body),
+            "decorator_list": json_of_list(self.decorator_list),
+            "type_params": json_of_list(self.type_params)
+        }}
+
+    @property
     def ast(self):
         return ast.ClassDef(
             self.name.ast,
@@ -105,6 +135,10 @@ class Return(AbsStmt):
                 sexp_of_optional(self.value))
 
     @property
+    def json(self):
+        return {"Return": json_of_optional(self.value)}
+
+    @property
     def ast(self):
         return ast.Return(ast_of_optional(self.value))
 
@@ -115,6 +149,10 @@ class Delete(AbsStmt):
     @property
     def sexp(self):
         return ("Delete", sexp_of_list(self.targets))
+
+    @property
+    def json(self):
+        return {"Delete": json_of_list(self.targets)}
 
     @property
     def ast(self):
@@ -132,6 +170,14 @@ class Assign(AbsStmt):
                 sexp_of_list(self.targets),
                 self.value.sexp,
                 self.type_comment)
+
+    @property
+    def json(self):
+        return {"Assign": {
+            "targets": json_of_list(self.targets),
+            "value": self.value.json,
+            "type_comment": self.type_comment
+        }}
 
     @property
     def ast(self):
@@ -154,6 +200,14 @@ class TypeAlias(AbsStmt):
                 self.value.sexp)
 
     @property
+    def json(self):
+        return {"TypeAlias": {
+            "name": self.name.json,
+            "type_params": json_of_list(self.type_params),
+            "value": self.value.json
+        }}
+
+    @property
     def ast(self):
         return ast.TypeAlias(
             self.name.ast, 
@@ -174,6 +228,14 @@ class AugAssign(AbsStmt):
                 self.value.sexp)
 
     @property
+    def json(self):
+        return {"AugAssign": {
+            "target": self.target.json,
+            "op": self.op.json,
+            "value": self.value.json
+        }}
+
+    @property
     def ast(self):
         return ast.AugAssign(self.target.ast, self.op.ast, self.value.ast)
 
@@ -191,6 +253,15 @@ class AnnAssign(AbsStmt):
                 self.annotation.sexp,
                 sexp_of_optional(self.value),
                 self.simple)
+
+    @property
+    def json(self):
+        return {"AnnAssign": {
+            "target": self.target.json,
+            "annotation": self.annotation.json,
+            "value": json_of_optional(self.value),
+            "simple": self.simple
+        }}
 
     @property
     def ast(self):
@@ -216,6 +287,16 @@ class For(AbsStmt):
                 sexp_of_list(self.body),
                 sexp_of_list(self.orelse),
                 self.type_comment)
+
+    @property
+    def json(self):
+        return {"For": {
+            "target": self.target.json,
+            "iter": self.iter.json,
+            "body": json_of_list(self.body),
+            "orelse": json_of_list(self.orelse),
+            "type_comment": self.type_comment
+        }}
 
     @property
     def ast(self):
@@ -244,6 +325,16 @@ class AsyncFor(AbsStmt):
                 self.type_comment)
 
     @property
+    def json(self):
+        return {"AsyncFor": {
+            "target": self.target.json,
+            "iter": self.iter.json,
+            "body": json_of_list(self.body),
+            "orelse": json_of_list(self.orelse),
+            "type_comment": self.type_comment
+        }}
+
+    @property
     def ast(self):
         return ast.AsyncFor(
             self.target.ast, 
@@ -266,6 +357,14 @@ class While(AbsStmt):
                 sexp_of_list(self.orelse))
 
     @property
+    def json(self):
+        return {"While": {
+            "test": self.test.json,
+            "body": json_of_list(self.body),
+            "orelse": json_of_list(self.orelse)
+        }}
+
+    @property
     def ast(self):
         return ast.While(
             self.test.ast, 
@@ -284,6 +383,14 @@ class If(AbsStmt):
                 self.test.sexp,
                 sexp_of_list(self.body),
                 sexp_of_list(self.orelse))
+
+    @property
+    def json(self):
+        return {"If": {
+            "test": self.test.json,
+            "body": json_of_list(self.body),
+            "orelse": json_of_list(self.orelse)
+        }}
 
     @property
     def ast(self):
@@ -306,6 +413,14 @@ class With(AbsStmt):
                 self.type_comment)
 
     @property
+    def json(self):
+        return {"With": {
+            "items": json_of_list(self.items),
+            "body": json_of_list(self.body),
+            "type_comment": self.type_comment
+        }}
+
+    @property
     def ast(self):
         return ast.With(
             ast_of_list(self.items), 
@@ -326,6 +441,14 @@ class AsyncWith(AbsStmt):
                 self.type_comment)
 
     @property
+    def json(self):
+        return {"AsyncWith": {
+            "items": json_of_list(self.items),
+            "body": json_of_list(self.body),
+            "type_comment": self.type_comment
+        }}
+
+    @property
     def ast(self):
         return ast.AsyncWith(
             ast_of_list(self.items), 
@@ -344,6 +467,13 @@ class Match(AbsStmt):
                 sexp_of_list(self.cases))
 
     @property
+    def json(self):
+        return {"Match": {
+            "subject": self.subject.json,
+            "cases": json_of_list(self.cases)
+        }}
+
+    @property
     def ast(self):
         return ast.Match(
             self.subject.ast, 
@@ -359,6 +489,13 @@ class Raise(AbsStmt):
         return ("Raise",
                 sexp_of_optional(self.exc),
                 sexp_of_optional(self.cause))
+
+    @property
+    def json(self):
+        return {"Raise": {
+            "exc": json_of_optional(self.exc),
+            "cause": json_of_optional(self.cause)
+        }}
 
     @property
     def ast(self):
@@ -380,6 +517,15 @@ class Try(AbsStmt):
                 sexp_of_list(self.handlers),
                 sexp_of_list(self.orelse),
                 sexp_of_list(self.finalbody))
+
+    @property
+    def json(self):
+        return {"Try": {
+            "body": json_of_list(self.body),
+            "handlers": json_of_list(self.handlers),
+            "orelse": json_of_list(self.orelse),
+            "finalbody": json_of_list(self.finalbody)
+        }}
 
     @property
     def ast(self):
@@ -405,6 +551,15 @@ class TryStar(AbsStmt):
                 sexp_of_list(self.finalbody))
 
     @property
+    def json(self):
+        return {"TryStar": {
+            "body": json_of_list(self.body),
+            "handlers": json_of_list(self.handlers),
+            "orelse": json_of_list(self.orelse),
+            "finalbody": json_of_list(self.finalbody)
+        }}
+
+    @property
     def ast(self):
         return ast.TryStar(
             ast_of_list(self.body), 
@@ -424,6 +579,13 @@ class Assert(AbsStmt):
                 sexp_of_optional(self.msg))
 
     @property
+    def json(self):
+        return {"Assert": {
+            "test": self.test.json,
+            "msg": json_of_optional(self.msg)
+        }}
+
+    @property
     def ast(self):
         return ast.Assert(
             self.test.ast, 
@@ -436,6 +598,10 @@ class Import(AbsStmt):
     @property
     def sexp(self):
         return ("Import", self.names.sexp)
+
+    @property
+    def json(self):
+        return {"Import": self.names.json}
 
     @property
     def ast(self):
@@ -455,6 +621,14 @@ class ImportFrom(AbsStmt):
                 self.level)
 
     @property
+    def json(self):
+        return {"ImportFrom": {
+            "module": json_of_optional(self.module),
+            "names": json_of_list(self.names),
+            "level": self.level
+        }}
+
+    @property
     def ast(self):
         return ast.ImportFrom(
             ast_of_optional(self.module), 
@@ -470,6 +644,10 @@ class Global(AbsStmt):
         return ("Global", sexp_of_list(self.names))
 
     @property
+    def json(self):
+        return {"Global": json_of_list(self.names)}
+
+    @property
     def ast(self):
         return ast.Global(ast_of_list(self.names))
 
@@ -479,7 +657,11 @@ class Nonlocal(AbsStmt):
 
     @property
     def sexp(self):
-        return ("Global", sexp_of_list(self.names))
+        return ("Nonlocal", sexp_of_list(self.names))
+
+    @property
+    def json(self):
+        return {"Nonlocal": json_of_list(self.names)}
 
     @property
     def ast(self):
@@ -494,6 +676,10 @@ class Expr(AbsStmt):
         return ("Expr", self.value.sexp)
 
     @property
+    def json(self):
+        return {"Expr": self.value.json}
+
+    @property
     def ast(self):
         return ast.Expr(self.value.ast)
 
@@ -502,6 +688,10 @@ class Pass(AbsStmt):
     @property
     def sexp(self):
         return ("Pass")
+
+    @property
+    def json(self):
+        return "Pass"
 
     @property
     def ast(self):
@@ -514,6 +704,10 @@ class Break(AbsStmt):
         return ("Break")
 
     @property
+    def json(self):
+        return "Break"
+
+    @property
     def ast(self):
         return ast.Break()
 
@@ -522,6 +716,10 @@ class Continue(AbsStmt):
     @property
     def sexp(self):
         return ("Continue")
+
+    @property
+    def json(self):
+        return "Continue"
 
     @property
     def ast(self):
