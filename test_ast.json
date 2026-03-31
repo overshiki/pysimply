@@ -1,0 +1,184 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "x"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "a",
+              "annotation": {
+                "Name": {
+                  "id": {
+                    "Identifier": "int"
+                  },
+                  "ctx": "Load"
+                }
+              },
+              "type_comment": null
+            }
+          },
+          {
+            "Arg": {
+              "arg": "b",
+              "annotation": {
+                "Name": {
+                  "id": {
+                    "Identifier": "float"
+                  },
+                  "ctx": "Load"
+                }
+              },
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Return": {
+            "BinOp": {
+              "left": {
+                "Name": {
+                  "id": {
+                    "Identifier": "x"
+                  },
+                  "ctx": "Load"
+                }
+              },
+              "op": "Add",
+              "right": {
+                "Constant": {
+                  "value": 1,
+                  "kind": null
+                }
+              }
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": {
+        "Name": {
+          "id": {
+            "Identifier": "Ret"
+          },
+          "ctx": "Load"
+        }
+      }
+    }
+  },
+  {
+    "For": {
+      "target": {
+        "Name": {
+          "id": {
+            "Identifier": "i"
+          },
+          "ctx": "Store"
+        }
+      },
+      "iter": {
+        "Call": {
+          "func": {
+            "Name": {
+              "id": {
+                "Identifier": "range"
+              },
+              "ctx": "Load"
+            }
+          },
+          "args": [
+            {
+              "Constant": {
+                "value": 10,
+                "kind": null
+              }
+            }
+          ],
+          "keywords": []
+        }
+      },
+      "body": [
+        "Pass"
+      ],
+      "orelse": [],
+      "type_comment": null
+    }
+  },
+  {
+    "If": {
+      "test": {
+        "Compare": {
+          "left": {
+            "Name": {
+              "id": {
+                "Identifier": "x"
+              },
+              "ctx": "Load"
+            }
+          },
+          "ops": [
+            "Gt"
+          ],
+          "comparators": [
+            {
+              "Constant": {
+                "value": 10,
+                "kind": null
+              }
+            }
+          ]
+        }
+      },
+      "body": [
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "y"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Constant": {
+                "value": 1,
+                "kind": null
+              }
+            },
+            "type_comment": null
+          }
+        }
+      ],
+      "orelse": [
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "y"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Constant": {
+                "value": 0,
+                "kind": null
+              }
+            },
+            "type_comment": null
+          }
+        }
+      ]
+    }
+  }
+]

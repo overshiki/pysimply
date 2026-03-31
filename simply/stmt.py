@@ -593,15 +593,15 @@ class Assert(AbsStmt):
 
 @dataclass
 class Import(AbsStmt):
-    names: AbsAlias
+    names: List[AbsAlias]
 
     @property
     def sexp(self):
-        return ("Import", self.names.sexp)
+        return ("Import", sexp_of_list(self.names))
 
     @property
     def json(self):
-        return {"Import": self.names.json}
+        return {"Import": json_of_list(self.names)}
 
     @property
     def ast(self):

@@ -1,0 +1,376 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "model"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "data",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "alpha"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "sample"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "alpha",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "Normal"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Constant": {
+                            "value": 0.0,
+                            "kind": null
+                          }
+                        },
+                        {
+                          "Constant": {
+                            "value": 1.0,
+                            "kind": null
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "beta"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "param"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "beta",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Constant": {
+                      "value": 0.0,
+                      "kind": null
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "i"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "plate"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "data",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "len"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Name": {
+                            "id": {
+                              "Identifier": "data"
+                            },
+                            "ctx": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "body": [
+              {
+                "Assign": {
+                  "targets": [
+                    {
+                      "Name": {
+                        "id": {
+                          "Identifier": "mean"
+                        },
+                        "ctx": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "BinOp": {
+                      "left": {
+                        "BinOp": {
+                          "left": {
+                            "Name": {
+                              "id": {
+                                "Identifier": "alpha"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "op": "Mult",
+                          "right": {
+                            "Subscript": {
+                              "value": {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "data"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              },
+                              "aslice": {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "i"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              },
+                              "ctx": "Load"
+                            }
+                          }
+                        }
+                      },
+                      "op": "Add",
+                      "right": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "beta"
+                          },
+                          "ctx": "Load"
+                        }
+                      }
+                    }
+                  },
+                  "type_comment": null
+                }
+              },
+              {
+                "Expr": {
+                  "Call": {
+                    "func": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "sample"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "Attribute": {
+                              "value": {
+                                "Constant": {
+                                  "value": "obs_{}",
+                                  "kind": null
+                                }
+                              },
+                              "attr": {
+                                "Identifier": "format"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "i"
+                                },
+                                "ctx": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      },
+                      {
+                        "Call": {
+                          "func": {
+                            "Name": {
+                              "id": {
+                                "Identifier": "Normal"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "mean"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            {
+                              "Constant": {
+                                "value": 1.0,
+                                "kind": null
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      }
+                    ],
+                    "keywords": [
+                      {
+                        "Keywords": {
+                          "arg": "obs",
+                          "value": {
+                            "Subscript": {
+                              "value": {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "data"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              },
+                              "aslice": {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "i"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              },
+                              "ctx": "Load"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "orelse": [],
+            "type_comment": null
+          }
+        },
+        {
+          "Return": {
+            "BinOp": {
+              "left": {
+                "Name": {
+                  "id": {
+                    "Identifier": "alpha"
+                  },
+                  "ctx": "Load"
+                }
+              },
+              "op": "Add",
+              "right": {
+                "Name": {
+                  "id": {
+                    "Identifier": "beta"
+                  },
+                  "ctx": "Load"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

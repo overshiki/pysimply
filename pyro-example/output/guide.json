@@ -1,0 +1,233 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "guide"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "data",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "alpha_loc"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "param"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "alpha_loc",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Constant": {
+                      "value": 0.0,
+                      "kind": null
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "alpha_scale"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "param"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "alpha_scale",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Constant": {
+                      "value": 1.0,
+                      "kind": null
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Expr": {
+            "Call": {
+              "func": {
+                "Name": {
+                  "id": {
+                    "Identifier": "sample"
+                  },
+                  "ctx": "Load"
+                }
+              },
+              "args": [
+                {
+                  "Constant": {
+                    "value": "alpha",
+                    "kind": null
+                  }
+                },
+                {
+                  "Call": {
+                    "func": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "Normal"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "alpha_loc"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "alpha_scale"
+                          },
+                          "ctx": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                }
+              ],
+              "keywords": []
+            }
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "i"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "plate"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "data",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "len"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Name": {
+                            "id": {
+                              "Identifier": "data"
+                            },
+                            "ctx": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "body": [
+              "Pass"
+            ],
+            "orelse": [],
+            "type_comment": null
+          }
+        },
+        {
+          "Return": {
+            "Name": {
+              "id": {
+                "Identifier": "alpha_loc"
+              },
+              "ctx": "Load"
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

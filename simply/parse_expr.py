@@ -52,3 +52,7 @@ def _(c: ast.Compare):
     ops = list(map(parse, c.ops))
     comparators = list(map(parse, c.comparators))
     return Compare(left, ops, comparators)
+
+@parse.register
+def _(c: ast.Subscript):
+    return Subscript(parse(c.value), parse(c.slice), parse(c.ctx))
