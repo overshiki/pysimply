@@ -56,3 +56,19 @@ def _(c: ast.Compare):
 @parse.register
 def _(c: ast.Subscript):
     return Subscript(parse(c.value), parse(c.slice), parse(c.ctx))
+
+@parse.register
+def _(c: ast.Tuple):
+    elts = list(map(parse, c.elts))
+    return ATuple(elts, parse(c.ctx))
+
+@parse.register
+def _(c: ast.List):
+    elts = list(map(parse, c.elts))
+    return AList(elts, parse(c.ctx))
+
+@parse.register
+def _(c: ast.Dict):
+    keys = [parse(k) if k is not None else Constant(None, None) for k in c.keys]
+    values = list(map(parse, c.values))
+    return ADict(keys, values)

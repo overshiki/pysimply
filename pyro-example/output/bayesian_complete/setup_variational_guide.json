@@ -2,20 +2,13 @@
   {
     "FunctionDef": {
       "name": {
-        "Identifier": "guide"
+        "Identifier": "setup_variational_guide"
       },
       "args": {
         "Arguments": [
           {
             "Arg": {
-              "arg": "X",
-              "annotation": null,
-              "type_comment": null
-            }
-          },
-          {
-            "Arg": {
-              "arg": "y",
+              "arg": "config",
               "annotation": null,
               "type_comment": null
             }
@@ -26,7 +19,7 @@
         {
           "Expr": {
             "Constant": {
-              "value": "\n    Variational Guide for Bayesian Linear Regression.\n\n    Uses mean-field approximation where each latent variable\n    has its own independent variational distribution:\n\n        q(w) = Normal(w_loc, w_scale)\n        q(b) = Normal(b_loc, b_scale)  \n        q(sigma) = Normal(sigma_loc, sigma_scale)  # simplified\n\n    Args:\n        X: Input features (not used in guide, kept for API consistency)\n        y: Target values (not used in guide, kept for API consistency)\n\n    Returns:\n        Tuple of variational parameters (w_loc, b_loc, sigma_loc)\n    ",
+              "value": "\n    Setup variational parameters for the guide.\n\n    Internal function for guide computation.\n\n    Args:\n        config: Model configuration\n\n    Returns:\n        Dictionary with variational parameter names and initial values\n    ",
               "kind": null
             }
           }
@@ -446,96 +439,138 @@
           }
         },
         {
-          "For": {
-            "target": {
-              "Name": {
-                "id": {
-                  "Identifier": "i"
-                },
-                "ctx": "Store"
-              }
-            },
-            "iter": {
-              "Call": {
-                "func": {
-                  "Name": {
-                    "id": {
-                      "Identifier": "plate"
-                    },
-                    "ctx": "Load"
+          "Return": {
+            "Dict": {
+              "keys": [
+                {
+                  "Constant": {
+                    "value": "w",
+                    "kind": null
                   }
                 },
-                "args": [
-                  {
-                    "Constant": {
-                      "value": "data",
-                      "kind": null
-                    }
-                  },
-                  {
-                    "Call": {
-                      "func": {
+                {
+                  "Constant": {
+                    "value": "b",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "sigma",
+                    "kind": null
+                  }
+                }
+              ],
+              "values": [
+                {
+                  "Dict": {
+                    "keys": [
+                      {
+                        "Constant": {
+                          "value": "loc",
+                          "kind": null
+                        }
+                      },
+                      {
+                        "Constant": {
+                          "value": "scale",
+                          "kind": null
+                        }
+                      }
+                    ],
+                    "values": [
+                      {
                         "Name": {
                           "id": {
-                            "Identifier": "len"
+                            "Identifier": "w_loc"
                           },
                           "ctx": "Load"
                         }
                       },
-                      "args": [
-                        {
-                          "Name": {
-                            "id": {
-                              "Identifier": "y"
-                            },
-                            "ctx": "Load"
-                          }
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "w_scale"
+                          },
+                          "ctx": "Load"
                         }
-                      ],
-                      "keywords": []
-                    }
-                  }
-                ],
-                "keywords": []
-              }
-            },
-            "body": [
-              "Pass"
-            ],
-            "orelse": [],
-            "type_comment": null
-          }
-        },
-        {
-          "Return": {
-            "Tuple": {
-              "elts": [
-                {
-                  "Name": {
-                    "id": {
-                      "Identifier": "w_loc"
-                    },
-                    "ctx": "Load"
+                      }
+                    ]
                   }
                 },
                 {
-                  "Name": {
-                    "id": {
-                      "Identifier": "b_loc"
-                    },
-                    "ctx": "Load"
+                  "Dict": {
+                    "keys": [
+                      {
+                        "Constant": {
+                          "value": "loc",
+                          "kind": null
+                        }
+                      },
+                      {
+                        "Constant": {
+                          "value": "scale",
+                          "kind": null
+                        }
+                      }
+                    ],
+                    "values": [
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "b_loc"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "b_scale"
+                          },
+                          "ctx": "Load"
+                        }
+                      }
+                    ]
                   }
                 },
                 {
-                  "Name": {
-                    "id": {
-                      "Identifier": "sigma_loc"
-                    },
-                    "ctx": "Load"
+                  "Dict": {
+                    "keys": [
+                      {
+                        "Constant": {
+                          "value": "loc",
+                          "kind": null
+                        }
+                      },
+                      {
+                        "Constant": {
+                          "value": "scale",
+                          "kind": null
+                        }
+                      }
+                    ],
+                    "values": [
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "sigma_loc"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "sigma_scale"
+                          },
+                          "ctx": "Load"
+                        }
+                      }
+                    ]
                   }
                 }
-              ],
-              "ctx": "Load"
+              ]
             }
           }
         }

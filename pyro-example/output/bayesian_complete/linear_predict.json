@@ -1,0 +1,97 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "linear_predict"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "x",
+              "annotation": null,
+              "type_comment": null
+            }
+          },
+          {
+            "Arg": {
+              "arg": "params",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Expr": {
+            "Constant": {
+              "value": "\n    Compute linear prediction: y = w * x + b\n\n    Internal function - pure computation.\n\n    Args:\n        x: Input value(s)\n        params: Dictionary with 'w' and 'b'\n\n    Returns:\n        Predicted value\n    ",
+              "kind": null
+            }
+          }
+        },
+        {
+          "Return": {
+            "BinOp": {
+              "left": {
+                "BinOp": {
+                  "left": {
+                    "Name": {
+                      "id": {
+                        "Identifier": "x"
+                      },
+                      "ctx": "Load"
+                    }
+                  },
+                  "op": "Mult",
+                  "right": {
+                    "Subscript": {
+                      "value": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "params"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "aslice": {
+                        "Constant": {
+                          "value": "w",
+                          "kind": null
+                        }
+                      },
+                      "ctx": "Load"
+                    }
+                  }
+                }
+              },
+              "op": "Add",
+              "right": {
+                "Subscript": {
+                  "value": {
+                    "Name": {
+                      "id": {
+                        "Identifier": "params"
+                      },
+                      "ctx": "Load"
+                    }
+                  },
+                  "aslice": {
+                    "Constant": {
+                      "value": "b",
+                      "kind": null
+                    }
+                  },
+                  "ctx": "Load"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

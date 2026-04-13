@@ -1,0 +1,317 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "predict_main"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "model_params",
+              "annotation": null,
+              "type_comment": null
+            }
+          },
+          {
+            "Arg": {
+              "arg": "new_x",
+              "annotation": null,
+              "type_comment": null
+            }
+          },
+          {
+            "Arg": {
+              "arg": "config",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Expr": {
+            "Constant": {
+              "value": "\n    Entry point for prediction with a trained model.\n\n    Args:\n        model_params: Trained model parameters {w, b, sigma}\n        new_x: List of new input values to predict\n        config: Model configuration\n\n    Returns:\n        Dictionary with predictions and uncertainties\n    ",
+              "kind": null
+            }
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "predictions"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "List": {
+                "elts": [],
+                "ctx": "Load"
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "uncertainties"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "List": {
+                "elts": [],
+                "ctx": "Load"
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "x"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Name": {
+                "id": {
+                  "Identifier": "new_x"
+                },
+                "ctx": "Load"
+              }
+            },
+            "body": [
+              {
+                "Assign": {
+                  "targets": [
+                    {
+                      "Name": {
+                        "id": {
+                          "Identifier": "pred"
+                        },
+                        "ctx": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "linear_predict"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Name": {
+                            "id": {
+                              "Identifier": "x"
+                            },
+                            "ctx": "Load"
+                          }
+                        },
+                        {
+                          "Name": {
+                            "id": {
+                              "Identifier": "model_params"
+                            },
+                            "ctx": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  },
+                  "type_comment": null
+                }
+              },
+              {
+                "Expr": {
+                  "Call": {
+                    "func": {
+                      "Attribute": {
+                        "value": {
+                          "Name": {
+                            "id": {
+                              "Identifier": "predictions"
+                            },
+                            "ctx": "Load"
+                          }
+                        },
+                        "attr": {
+                          "Identifier": "append"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "pred"
+                          },
+                          "ctx": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                }
+              },
+              {
+                "Expr": {
+                  "Call": {
+                    "func": {
+                      "Attribute": {
+                        "value": {
+                          "Name": {
+                            "id": {
+                              "Identifier": "uncertainties"
+                            },
+                            "ctx": "Load"
+                          }
+                        },
+                        "attr": {
+                          "Identifier": "append"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "Attribute": {
+                              "value": {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "model_params"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              },
+                              "attr": {
+                                "Identifier": "get"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Constant": {
+                                "value": "sigma",
+                                "kind": null
+                              }
+                            },
+                            {
+                              "Constant": {
+                                "value": 1.0,
+                                "kind": null
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                }
+              }
+            ],
+            "orelse": [],
+            "type_comment": null
+          }
+        },
+        {
+          "Return": {
+            "Dict": {
+              "keys": [
+                {
+                  "Constant": {
+                    "value": "inputs",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "predictions",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "uncertainties",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "config",
+                    "kind": null
+                  }
+                }
+              ],
+              "values": [
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "new_x"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "predictions"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "uncertainties"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "config"
+                    },
+                    "ctx": "Load"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

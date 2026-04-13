@@ -2,20 +2,20 @@
   {
     "FunctionDef": {
       "name": {
-        "Identifier": "model"
+        "Identifier": "build_likelihood"
       },
       "args": {
         "Arguments": [
           {
             "Arg": {
-              "arg": "X",
+              "arg": "params",
               "annotation": null,
               "type_comment": null
             }
           },
           {
             "Arg": {
-              "arg": "y",
+              "arg": "data",
               "annotation": null,
               "type_comment": null
             }
@@ -26,7 +26,7 @@
         {
           "Expr": {
             "Constant": {
-              "value": "\n    Bayesian Linear Regression Model (1D for simplicity).\n\n    Mathematical model:\n        w ~ Normal(0, 1)                    # Prior on weight\n        b ~ Normal(0, 1)                    # Prior on bias\n        sigma ~ Gamma(1, 1)                 # Prior on noise\n\n        For each observation i:\n            y[i] ~ Normal(X[i] * w + b, sigma)   # Likelihood\n\n    Args:\n        X: Input features (1D array of shape [n])\n        y: Target values (array of shape [n])\n\n    Returns:\n        Tuple of (w, b, sigma) - the latent variables\n    ",
+              "value": "\n    Build the likelihood by observing data.\n\n    Internal function - inputs come from entry point flow.\n\n    Args:\n        params: Dictionary with {w, b, sigma}\n        data: Dictionary with keys:\n            - x: List of input values\n            - y: List of observed output values\n\n    Returns:\n        The params dictionary (unchanged)\n    ",
               "kind": null
             }
           }
@@ -37,58 +37,29 @@
               {
                 "Name": {
                   "id": {
-                    "Identifier": "w"
+                    "Identifier": "x_vals"
                   },
                   "ctx": "Store"
                 }
               }
             ],
             "value": {
-              "Call": {
-                "func": {
+              "Subscript": {
+                "value": {
                   "Name": {
                     "id": {
-                      "Identifier": "sample"
+                      "Identifier": "data"
                     },
                     "ctx": "Load"
                   }
                 },
-                "args": [
-                  {
-                    "Constant": {
-                      "value": "w",
-                      "kind": null
-                    }
-                  },
-                  {
-                    "Call": {
-                      "func": {
-                        "Name": {
-                          "id": {
-                            "Identifier": "Normal"
-                          },
-                          "ctx": "Load"
-                        }
-                      },
-                      "args": [
-                        {
-                          "Constant": {
-                            "value": 0.0,
-                            "kind": null
-                          }
-                        },
-                        {
-                          "Constant": {
-                            "value": 1.0,
-                            "kind": null
-                          }
-                        }
-                      ],
-                      "keywords": []
-                    }
+                "aslice": {
+                  "Constant": {
+                    "value": "x",
+                    "kind": null
                   }
-                ],
-                "keywords": []
+                },
+                "ctx": "Load"
               }
             },
             "type_comment": null
@@ -100,58 +71,29 @@
               {
                 "Name": {
                   "id": {
-                    "Identifier": "b"
+                    "Identifier": "y_vals"
                   },
                   "ctx": "Store"
                 }
               }
             ],
             "value": {
-              "Call": {
-                "func": {
+              "Subscript": {
+                "value": {
                   "Name": {
                     "id": {
-                      "Identifier": "sample"
+                      "Identifier": "data"
                     },
                     "ctx": "Load"
                   }
                 },
-                "args": [
-                  {
-                    "Constant": {
-                      "value": "b",
-                      "kind": null
-                    }
-                  },
-                  {
-                    "Call": {
-                      "func": {
-                        "Name": {
-                          "id": {
-                            "Identifier": "Normal"
-                          },
-                          "ctx": "Load"
-                        }
-                      },
-                      "args": [
-                        {
-                          "Constant": {
-                            "value": 0.0,
-                            "kind": null
-                          }
-                        },
-                        {
-                          "Constant": {
-                            "value": 1.0,
-                            "kind": null
-                          }
-                        }
-                      ],
-                      "keywords": []
-                    }
+                "aslice": {
+                  "Constant": {
+                    "value": "y",
+                    "kind": null
                   }
-                ],
-                "keywords": []
+                },
+                "ctx": "Load"
               }
             },
             "type_comment": null
@@ -170,51 +112,22 @@
               }
             ],
             "value": {
-              "Call": {
-                "func": {
+              "Subscript": {
+                "value": {
                   "Name": {
                     "id": {
-                      "Identifier": "sample"
+                      "Identifier": "params"
                     },
                     "ctx": "Load"
                   }
                 },
-                "args": [
-                  {
-                    "Constant": {
-                      "value": "sigma",
-                      "kind": null
-                    }
-                  },
-                  {
-                    "Call": {
-                      "func": {
-                        "Name": {
-                          "id": {
-                            "Identifier": "Gamma"
-                          },
-                          "ctx": "Load"
-                        }
-                      },
-                      "args": [
-                        {
-                          "Constant": {
-                            "value": 1.0,
-                            "kind": null
-                          }
-                        },
-                        {
-                          "Constant": {
-                            "value": 1.0,
-                            "kind": null
-                          }
-                        }
-                      ],
-                      "keywords": []
-                    }
+                "aslice": {
+                  "Constant": {
+                    "value": "sigma",
+                    "kind": null
                   }
-                ],
-                "keywords": []
+                },
+                "ctx": "Load"
               }
             },
             "type_comment": null
@@ -243,7 +156,7 @@
                 "args": [
                   {
                     "Constant": {
-                      "value": "data",
+                      "value": "observations",
                       "kind": null
                     }
                   },
@@ -261,7 +174,7 @@
                         {
                           "Name": {
                             "id": {
-                              "Identifier": "y"
+                              "Identifier": "x_vals"
                             },
                             "ctx": "Load"
                           }
@@ -288,50 +201,47 @@
                     }
                   ],
                   "value": {
-                    "BinOp": {
-                      "left": {
-                        "BinOp": {
-                          "left": {
-                            "Subscript": {
-                              "value": {
-                                "Name": {
-                                  "id": {
-                                    "Identifier": "X"
-                                  },
-                                  "ctx": "Load"
-                                }
-                              },
-                              "aslice": {
-                                "Name": {
-                                  "id": {
-                                    "Identifier": "i"
-                                  },
-                                  "ctx": "Load"
-                                }
-                              },
-                              "ctx": "Load"
-                            }
-                          },
-                          "op": "Mult",
-                          "right": {
-                            "Name": {
-                              "id": {
-                                "Identifier": "w"
-                              },
-                              "ctx": "Load"
-                            }
-                          }
-                        }
-                      },
-                      "op": "Add",
-                      "right": {
+                    "Call": {
+                      "func": {
                         "Name": {
                           "id": {
-                            "Identifier": "b"
+                            "Identifier": "linear_predict"
                           },
                           "ctx": "Load"
                         }
-                      }
+                      },
+                      "args": [
+                        {
+                          "Subscript": {
+                            "value": {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "x_vals"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "aslice": {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "i"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "ctx": "Load"
+                          }
+                        },
+                        {
+                          "Name": {
+                            "id": {
+                              "Identifier": "params"
+                            },
+                            "ctx": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
                     }
                   },
                   "type_comment": null
@@ -355,7 +265,7 @@
                             "Attribute": {
                               "value": {
                                 "Constant": {
-                                  "value": "obs_{}",
+                                  "value": "y_{}",
                                   "kind": null
                                 }
                               },
@@ -419,7 +329,7 @@
                               "value": {
                                 "Name": {
                                   "id": {
-                                    "Identifier": "y"
+                                    "Identifier": "y_vals"
                                   },
                                   "ctx": "Load"
                                 }
@@ -448,33 +358,10 @@
         },
         {
           "Return": {
-            "Tuple": {
-              "elts": [
-                {
-                  "Name": {
-                    "id": {
-                      "Identifier": "w"
-                    },
-                    "ctx": "Load"
-                  }
-                },
-                {
-                  "Name": {
-                    "id": {
-                      "Identifier": "b"
-                    },
-                    "ctx": "Load"
-                  }
-                },
-                {
-                  "Name": {
-                    "id": {
-                      "Identifier": "sigma"
-                    },
-                    "ctx": "Load"
-                  }
-                }
-              ],
+            "Name": {
+              "id": {
+                "Identifier": "params"
+              },
               "ctx": "Load"
             }
           }

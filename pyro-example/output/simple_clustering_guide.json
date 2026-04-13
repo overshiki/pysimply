@@ -1,0 +1,356 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "simple_clustering_guide"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "data",
+              "annotation": null,
+              "type_comment": null
+            }
+          },
+          {
+            "Arg": {
+              "arg": "K",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Expr": {
+            "Constant": {
+              "value": "\n    Guide for simple clustering.\n\n    Args:\n        data: Data points\n        K: Number of clusters\n\n    Returns:\n        Variational parameters\n    ",
+              "kind": null
+            }
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "k"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "range"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Name": {
+                      "id": {
+                        "Identifier": "K"
+                      },
+                      "ctx": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "body": [
+              {
+                "Assign": {
+                  "targets": [
+                    {
+                      "Name": {
+                        "id": {
+                          "Identifier": "center_loc"
+                        },
+                        "ctx": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "param"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Call": {
+                            "func": {
+                              "Attribute": {
+                                "value": {
+                                  "Constant": {
+                                    "value": "center_{}_loc",
+                                    "kind": null
+                                  }
+                                },
+                                "attr": {
+                                  "Identifier": "format"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "k"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        },
+                        {
+                          "Constant": {
+                            "value": 0.0,
+                            "kind": null
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  },
+                  "type_comment": null
+                }
+              },
+              {
+                "Assign": {
+                  "targets": [
+                    {
+                      "Name": {
+                        "id": {
+                          "Identifier": "center_scale"
+                        },
+                        "ctx": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "param"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Call": {
+                            "func": {
+                              "Attribute": {
+                                "value": {
+                                  "Constant": {
+                                    "value": "center_{}_scale",
+                                    "kind": null
+                                  }
+                                },
+                                "attr": {
+                                  "Identifier": "format"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "k"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        },
+                        {
+                          "Constant": {
+                            "value": 2.0,
+                            "kind": null
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  },
+                  "type_comment": null
+                }
+              },
+              {
+                "Expr": {
+                  "Call": {
+                    "func": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "sample"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "Attribute": {
+                              "value": {
+                                "Constant": {
+                                  "value": "center_{}",
+                                  "kind": null
+                                }
+                              },
+                              "attr": {
+                                "Identifier": "format"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "k"
+                                },
+                                "ctx": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      },
+                      {
+                        "Call": {
+                          "func": {
+                            "Name": {
+                              "id": {
+                                "Identifier": "Normal"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "center_loc"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "center_scale"
+                                },
+                                "ctx": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                }
+              }
+            ],
+            "orelse": [],
+            "type_comment": null
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "i"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "plate"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "data",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "len"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Name": {
+                            "id": {
+                              "Identifier": "data"
+                            },
+                            "ctx": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "body": [
+              "Pass"
+            ],
+            "orelse": [],
+            "type_comment": null
+          }
+        },
+        {
+          "Return": {
+            "Name": {
+              "id": {
+                "Identifier": "K"
+              },
+              "ctx": "Load"
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

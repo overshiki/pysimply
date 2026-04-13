@@ -1,0 +1,415 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "gmm_collapsed_model"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "data",
+              "annotation": null,
+              "type_comment": null
+            }
+          },
+          {
+            "Arg": {
+              "arg": "K",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Expr": {
+            "Constant": {
+              "value": "\n    Collapsed GMM (marginalizing out latent assignments).\n\n    Instead of explicit z[i] variables, computes the marginal\n    likelihood directly as a mixture.\n\n    Mathematical model:\n        p(x[i]) = sum_k pi[k] * Normal(x[i] | mu[k], sigma[k])\n\n    This demonstrates a more efficient formulation when the\n    latent assignments are not of direct interest.\n\n    Args:\n        data: Observed data points\n        K: Number of components\n\n    Returns:\n        Number of data points\n    ",
+              "kind": null
+            }
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "k"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "plate"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "components",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Name": {
+                      "id": {
+                        "Identifier": "K"
+                      },
+                      "ctx": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "body": [
+              {
+                "Expr": {
+                  "Call": {
+                    "func": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "sample"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "Attribute": {
+                              "value": {
+                                "Constant": {
+                                  "value": "mu_{}",
+                                  "kind": null
+                                }
+                              },
+                              "attr": {
+                                "Identifier": "format"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "k"
+                                },
+                                "ctx": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      },
+                      {
+                        "Call": {
+                          "func": {
+                            "Name": {
+                              "id": {
+                                "Identifier": "Normal"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Constant": {
+                                "value": 0.0,
+                                "kind": null
+                              }
+                            },
+                            {
+                              "Constant": {
+                                "value": 10.0,
+                                "kind": null
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                }
+              },
+              {
+                "Expr": {
+                  "Call": {
+                    "func": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "sample"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "Attribute": {
+                              "value": {
+                                "Constant": {
+                                  "value": "sigma_{}",
+                                  "kind": null
+                                }
+                              },
+                              "attr": {
+                                "Identifier": "format"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "k"
+                                },
+                                "ctx": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      },
+                      {
+                        "Call": {
+                          "func": {
+                            "Name": {
+                              "id": {
+                                "Identifier": "Gamma"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Constant": {
+                                "value": 1.0,
+                                "kind": null
+                              }
+                            },
+                            {
+                              "Constant": {
+                                "value": 1.0,
+                                "kind": null
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                }
+              }
+            ],
+            "orelse": [],
+            "type_comment": null
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "i"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "plate"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "data",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "len"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Name": {
+                            "id": {
+                              "Identifier": "data"
+                            },
+                            "ctx": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "body": [
+              {
+                "Expr": {
+                  "Call": {
+                    "func": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "sample"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "Attribute": {
+                              "value": {
+                                "Constant": {
+                                  "value": "obs_{}",
+                                  "kind": null
+                                }
+                              },
+                              "attr": {
+                                "Identifier": "format"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "i"
+                                },
+                                "ctx": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      },
+                      {
+                        "Call": {
+                          "func": {
+                            "Name": {
+                              "id": {
+                                "Identifier": "Normal"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Constant": {
+                                "value": 0.0,
+                                "kind": null
+                              }
+                            },
+                            {
+                              "Constant": {
+                                "value": 1.0,
+                                "kind": null
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      }
+                    ],
+                    "keywords": [
+                      {
+                        "Keywords": {
+                          "arg": "obs",
+                          "value": {
+                            "Subscript": {
+                              "value": {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "data"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              },
+                              "aslice": {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "i"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              },
+                              "ctx": "Load"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "orelse": [],
+            "type_comment": null
+          }
+        },
+        {
+          "Return": {
+            "Call": {
+              "func": {
+                "Name": {
+                  "id": {
+                    "Identifier": "len"
+                  },
+                  "ctx": "Load"
+                }
+              },
+              "args": [
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "data"
+                    },
+                    "ctx": "Load"
+                  }
+                }
+              ],
+              "keywords": []
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "entry_point": "predict_main",
+  "module": "bayesian_model",
+  "timestamp": "2026-04-10T23:24:32.562772",
+  "files": {
+    "ast": "predict_main.json",
+    "params": "predict_main_params.json"
+  }
+}

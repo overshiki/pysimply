@@ -1,0 +1,73 @@
+{
+  "invocation": {
+    "function": "predict_main",
+    "module": "bayesian_model",
+    "timestamp": "2026-04-10T23:24:32.562407"
+  },
+  "args": [
+    {
+      "type": "dict",
+      "keys": [
+        "w",
+        "b",
+        "sigma"
+      ],
+      "values": {
+        "w": {
+          "type": "float",
+          "value": 0.0
+        },
+        "b": {
+          "type": "float",
+          "value": 0.0
+        },
+        "sigma": {
+          "type": "float",
+          "value": 1.0
+        }
+      }
+    },
+    {
+      "type": "list",
+      "length": 3,
+      "element_type": "float",
+      "values": [
+        {
+          "type": "float",
+          "value": 6.0
+        },
+        {
+          "type": "float",
+          "value": 7.0
+        },
+        {
+          "type": "float",
+          "value": 8.0
+        }
+      ]
+    },
+    {
+      "type": "dict",
+      "keys": [
+        "prior_scale",
+        "model_name"
+      ],
+      "values": {
+        "prior_scale": {
+          "type": "float",
+          "value": 1.0
+        },
+        "model_name": {
+          "type": "str",
+          "value": "simple_linear"
+        }
+      }
+    }
+  ],
+  "arg_names": [
+    "model_params",
+    "new_x",
+    "config"
+  ],
+  "kwargs": {}
+}

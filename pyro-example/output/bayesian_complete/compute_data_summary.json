@@ -1,0 +1,289 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "compute_data_summary"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "data",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Expr": {
+            "Constant": {
+              "value": "\n    Compute summary statistics of input data.\n\n    Internal helper function.\n\n    Args:\n        data: Dictionary with 'x' and 'y' lists\n\n    Returns:\n        Dictionary with summary statistics\n    ",
+              "kind": null
+            }
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "x_vals"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Subscript": {
+                "value": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "data"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "aslice": {
+                  "Constant": {
+                    "value": "x",
+                    "kind": null
+                  }
+                },
+                "ctx": "Load"
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "y_vals"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Subscript": {
+                "value": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "data"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "aslice": {
+                  "Constant": {
+                    "value": "y",
+                    "kind": null
+                  }
+                },
+                "ctx": "Load"
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Return": {
+            "Dict": {
+              "keys": [
+                {
+                  "Constant": {
+                    "value": "n_observations",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "x_mean",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "y_mean",
+                    "kind": null
+                  }
+                }
+              ],
+              "values": [
+                {
+                  "Call": {
+                    "func": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "len"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Name": {
+                          "id": {
+                            "Identifier": "x_vals"
+                          },
+                          "ctx": "Load"
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                },
+                {
+                  "IfExp": {
+                    "test": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "x_vals"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "body": {
+                      "BinOp": {
+                        "left": {
+                          "Call": {
+                            "func": {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "sum"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "x_vals"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        },
+                        "op": "Div",
+                        "right": {
+                          "Call": {
+                            "func": {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "len"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "x_vals"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        }
+                      }
+                    },
+                    "orelse": {
+                      "Constant": {
+                        "value": 0,
+                        "kind": null
+                      }
+                    }
+                  }
+                },
+                {
+                  "IfExp": {
+                    "test": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "y_vals"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "body": {
+                      "BinOp": {
+                        "left": {
+                          "Call": {
+                            "func": {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "sum"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "y_vals"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        },
+                        "op": "Div",
+                        "right": {
+                          "Call": {
+                            "func": {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "len"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "y_vals"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        }
+                      }
+                    },
+                    "orelse": {
+                      "Constant": {
+                        "value": 0,
+                        "kind": null
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

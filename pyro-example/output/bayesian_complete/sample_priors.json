@@ -1,0 +1,325 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "sample_priors"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "config",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Expr": {
+            "Constant": {
+              "value": "\n    Sample model parameters from prior distributions.\n\n    Internal function - inputs come from entry point (config),\n    not directly from external Python world.\n\n    Args:\n        config: Dictionary with keys:\n            - prior_scale: Scale for weight prior (default: 1.0)\n\n    Returns:\n        Dictionary with sampled parameters {w, b, sigma}\n    ",
+              "kind": null
+            }
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "prior_scale"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Attribute": {
+                    "value": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "config"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "attr": {
+                      "Identifier": "get"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "prior_scale",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Constant": {
+                      "value": 1.0,
+                      "kind": null
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "w"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "sample"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "w",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "Normal"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Constant": {
+                            "value": 0.0,
+                            "kind": null
+                          }
+                        },
+                        {
+                          "Name": {
+                            "id": {
+                              "Identifier": "prior_scale"
+                            },
+                            "ctx": "Load"
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "b"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "sample"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "b",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "Normal"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Constant": {
+                            "value": 0.0,
+                            "kind": null
+                          }
+                        },
+                        {
+                          "Constant": {
+                            "value": 1.0,
+                            "kind": null
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "sigma"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "sample"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "sigma",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "Gamma"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Constant": {
+                            "value": 1.0,
+                            "kind": null
+                          }
+                        },
+                        {
+                          "Constant": {
+                            "value": 1.0,
+                            "kind": null
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Return": {
+            "Dict": {
+              "keys": [
+                {
+                  "Constant": {
+                    "value": "w",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "b",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "sigma",
+                    "kind": null
+                  }
+                }
+              ],
+              "values": [
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "w"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "b"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "sigma"
+                    },
+                    "ctx": "Load"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

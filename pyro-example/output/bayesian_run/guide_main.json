@@ -1,0 +1,296 @@
+[
+  {
+    "FunctionDef": {
+      "name": {
+        "Identifier": "guide_main"
+      },
+      "args": {
+        "Arguments": [
+          {
+            "Arg": {
+              "arg": "data",
+              "annotation": null,
+              "type_comment": null
+            }
+          },
+          {
+            "Arg": {
+              "arg": "config",
+              "annotation": null,
+              "type_comment": null
+            }
+          },
+          {
+            "Arg": {
+              "arg": "hyperparams",
+              "annotation": null,
+              "type_comment": null
+            }
+          }
+        ]
+      },
+      "body": [
+        {
+          "Expr": {
+            "Constant": {
+              "value": "\n    Entry point for the variational guide.\n\n    This guide mirrors the model structure but with variational\n    distributions instead of priors.\n\n    Args:\n        data: Training data (same format as main)\n        config: Model configuration\n        hyperparams: Inference hyperparameters\n\n    Returns:\n        Dictionary with variational parameters\n    ",
+              "kind": null
+            }
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "config"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "BoolOp": {
+                "op": "Or",
+                "value": [
+                  {
+                    "Name": {
+                      "id": {
+                        "Identifier": "config"
+                      },
+                      "ctx": "Load"
+                    }
+                  },
+                  {
+                    "Dict": {
+                      "keys": [],
+                      "values": []
+                    }
+                  }
+                ]
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "hyperparams"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "BoolOp": {
+                "op": "Or",
+                "value": [
+                  {
+                    "Name": {
+                      "id": {
+                        "Identifier": "hyperparams"
+                      },
+                      "ctx": "Load"
+                    }
+                  },
+                  {
+                    "Dict": {
+                      "keys": [],
+                      "values": []
+                    }
+                  }
+                ]
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "Assign": {
+            "targets": [
+              {
+                "Name": {
+                  "id": {
+                    "Identifier": "var_params"
+                  },
+                  "ctx": "Store"
+                }
+              }
+            ],
+            "value": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "setup_variational_guide"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Name": {
+                      "id": {
+                        "Identifier": "config"
+                      },
+                      "ctx": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "i"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "plate"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Constant": {
+                      "value": "observations",
+                      "kind": null
+                    }
+                  },
+                  {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "len"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Call": {
+                            "func": {
+                              "Attribute": {
+                                "value": {
+                                  "Name": {
+                                    "id": {
+                                      "Identifier": "data"
+                                    },
+                                    "ctx": "Load"
+                                  }
+                                },
+                                "attr": {
+                                  "Identifier": "get"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Constant": {
+                                  "value": "x",
+                                  "kind": null
+                                }
+                              },
+                              {
+                                "List": {
+                                  "elts": [],
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "body": [
+              "Pass"
+            ],
+            "orelse": [],
+            "type_comment": null
+          }
+        },
+        {
+          "Return": {
+            "Dict": {
+              "keys": [
+                {
+                  "Constant": {
+                    "value": "variational_params",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "config",
+                    "kind": null
+                  }
+                },
+                {
+                  "Constant": {
+                    "value": "hyperparams",
+                    "kind": null
+                  }
+                }
+              ],
+              "values": [
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "var_params"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "config"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                {
+                  "Name": {
+                    "id": {
+                      "Identifier": "hyperparams"
+                    },
+                    "ctx": "Load"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "decorator_list": [],
+      "returns": null
+    }
+  }
+]

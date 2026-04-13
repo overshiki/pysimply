@@ -2,7 +2,7 @@
   {
     "FunctionDef": {
       "name": {
-        "Identifier": "guide"
+        "Identifier": "guide_multi_feature"
       },
       "args": {
         "Arguments": [
@@ -26,7 +26,7 @@
         {
           "Expr": {
             "Constant": {
-              "value": "\n    Variational Guide for Bayesian Linear Regression.\n\n    Uses mean-field approximation where each latent variable\n    has its own independent variational distribution:\n\n        q(w) = Normal(w_loc, w_scale)\n        q(b) = Normal(b_loc, b_scale)  \n        q(sigma) = Normal(sigma_loc, sigma_scale)  # simplified\n\n    Args:\n        X: Input features (not used in guide, kept for API consistency)\n        y: Target values (not used in guide, kept for API consistency)\n\n    Returns:\n        Tuple of variational parameters (w_loc, b_loc, sigma_loc)\n    ",
+              "value": "\n    Variational Guide for multi-feature regression.\n\n    Args:\n        X: Input features\n        y: Target values\n\n    Returns:\n        Variational parameters\n    ",
               "kind": null
             }
           }
@@ -37,125 +37,78 @@
               {
                 "Name": {
                   "id": {
-                    "Identifier": "w_loc"
+                    "Identifier": "n_features"
                   },
                   "ctx": "Store"
                 }
               }
             ],
             "value": {
-              "Call": {
-                "func": {
-                  "Name": {
-                    "id": {
-                      "Identifier": "param"
+              "IfExp": {
+                "test": {
+                  "Compare": {
+                    "left": {
+                      "Call": {
+                        "func": {
+                          "Name": {
+                            "id": {
+                              "Identifier": "len"
+                            },
+                            "ctx": "Load"
+                          }
+                        },
+                        "args": [
+                          {
+                            "Name": {
+                              "id": {
+                                "Identifier": "X"
+                              },
+                              "ctx": "Load"
+                            }
+                          }
+                        ],
+                        "keywords": []
+                      }
                     },
-                    "ctx": "Load"
+                    "ops": [
+                      "Gt"
+                    ],
+                    "comparators": [
+                      {
+                        "Constant": {
+                          "value": 0,
+                          "kind": null
+                        }
+                      }
+                    ]
                   }
                 },
-                "args": [
-                  {
-                    "Constant": {
-                      "value": "w_loc",
-                      "kind": null
-                    }
-                  },
-                  {
-                    "Constant": {
-                      "value": 0.0,
-                      "kind": null
-                    }
-                  }
-                ],
-                "keywords": []
-              }
-            },
-            "type_comment": null
-          }
-        },
-        {
-          "Assign": {
-            "targets": [
-              {
-                "Name": {
-                  "id": {
-                    "Identifier": "w_scale"
-                  },
-                  "ctx": "Store"
-                }
-              }
-            ],
-            "value": {
-              "Call": {
-                "func": {
-                  "Name": {
-                    "id": {
-                      "Identifier": "param"
-                    },
-                    "ctx": "Load"
-                  }
-                },
-                "args": [
-                  {
-                    "Constant": {
-                      "value": "w_scale",
-                      "kind": null
-                    }
-                  },
-                  {
-                    "Constant": {
-                      "value": 1.0,
-                      "kind": null
-                    }
-                  }
-                ],
-                "keywords": []
-              }
-            },
-            "type_comment": null
-          }
-        },
-        {
-          "Expr": {
-            "Call": {
-              "func": {
-                "Name": {
-                  "id": {
-                    "Identifier": "sample"
-                  },
-                  "ctx": "Load"
-                }
-              },
-              "args": [
-                {
-                  "Constant": {
-                    "value": "w",
-                    "kind": null
-                  }
-                },
-                {
+                "body": {
                   "Call": {
                     "func": {
                       "Name": {
                         "id": {
-                          "Identifier": "Normal"
+                          "Identifier": "len"
                         },
                         "ctx": "Load"
                       }
                     },
                     "args": [
                       {
-                        "Name": {
-                          "id": {
-                            "Identifier": "w_loc"
+                        "Subscript": {
+                          "value": {
+                            "Name": {
+                              "id": {
+                                "Identifier": "X"
+                              },
+                              "ctx": "Load"
+                            }
                           },
-                          "ctx": "Load"
-                        }
-                      },
-                      {
-                        "Name": {
-                          "id": {
-                            "Identifier": "w_scale"
+                          "aslice": {
+                            "Constant": {
+                              "value": 0,
+                              "kind": null
+                            }
                           },
                           "ctx": "Load"
                         }
@@ -163,10 +116,262 @@
                     ],
                     "keywords": []
                   }
+                },
+                "orelse": {
+                  "Constant": {
+                    "value": 0,
+                    "kind": null
+                  }
                 }
-              ],
-              "keywords": []
-            }
+              }
+            },
+            "type_comment": null
+          }
+        },
+        {
+          "For": {
+            "target": {
+              "Name": {
+                "id": {
+                  "Identifier": "j"
+                },
+                "ctx": "Store"
+              }
+            },
+            "iter": {
+              "Call": {
+                "func": {
+                  "Name": {
+                    "id": {
+                      "Identifier": "range"
+                    },
+                    "ctx": "Load"
+                  }
+                },
+                "args": [
+                  {
+                    "Name": {
+                      "id": {
+                        "Identifier": "n_features"
+                      },
+                      "ctx": "Load"
+                    }
+                  }
+                ],
+                "keywords": []
+              }
+            },
+            "body": [
+              {
+                "Assign": {
+                  "targets": [
+                    {
+                      "Name": {
+                        "id": {
+                          "Identifier": "w_loc"
+                        },
+                        "ctx": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "param"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Call": {
+                            "func": {
+                              "Attribute": {
+                                "value": {
+                                  "Constant": {
+                                    "value": "w_{}_loc",
+                                    "kind": null
+                                  }
+                                },
+                                "attr": {
+                                  "Identifier": "format"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "j"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        },
+                        {
+                          "Constant": {
+                            "value": 0.0,
+                            "kind": null
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  },
+                  "type_comment": null
+                }
+              },
+              {
+                "Assign": {
+                  "targets": [
+                    {
+                      "Name": {
+                        "id": {
+                          "Identifier": "w_scale"
+                        },
+                        "ctx": "Store"
+                      }
+                    }
+                  ],
+                  "value": {
+                    "Call": {
+                      "func": {
+                        "Name": {
+                          "id": {
+                            "Identifier": "param"
+                          },
+                          "ctx": "Load"
+                        }
+                      },
+                      "args": [
+                        {
+                          "Call": {
+                            "func": {
+                              "Attribute": {
+                                "value": {
+                                  "Constant": {
+                                    "value": "w_{}_scale",
+                                    "kind": null
+                                  }
+                                },
+                                "attr": {
+                                  "Identifier": "format"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            "args": [
+                              {
+                                "Name": {
+                                  "id": {
+                                    "Identifier": "j"
+                                  },
+                                  "ctx": "Load"
+                                }
+                              }
+                            ],
+                            "keywords": []
+                          }
+                        },
+                        {
+                          "Constant": {
+                            "value": 1.0,
+                            "kind": null
+                          }
+                        }
+                      ],
+                      "keywords": []
+                    }
+                  },
+                  "type_comment": null
+                }
+              },
+              {
+                "Expr": {
+                  "Call": {
+                    "func": {
+                      "Name": {
+                        "id": {
+                          "Identifier": "sample"
+                        },
+                        "ctx": "Load"
+                      }
+                    },
+                    "args": [
+                      {
+                        "Call": {
+                          "func": {
+                            "Attribute": {
+                              "value": {
+                                "Constant": {
+                                  "value": "w_{}",
+                                  "kind": null
+                                }
+                              },
+                              "attr": {
+                                "Identifier": "format"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "j"
+                                },
+                                "ctx": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      },
+                      {
+                        "Call": {
+                          "func": {
+                            "Name": {
+                              "id": {
+                                "Identifier": "Normal"
+                              },
+                              "ctx": "Load"
+                            }
+                          },
+                          "args": [
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "w_loc"
+                                },
+                                "ctx": "Load"
+                              }
+                            },
+                            {
+                              "Name": {
+                                "id": {
+                                  "Identifier": "w_scale"
+                                },
+                                "ctx": "Load"
+                              }
+                            }
+                          ],
+                          "keywords": []
+                        }
+                      }
+                    ],
+                    "keywords": []
+                  }
+                }
+              }
+            ],
+            "orelse": [],
+            "type_comment": null
           }
         },
         {
@@ -513,7 +718,7 @@
                 {
                   "Name": {
                     "id": {
-                      "Identifier": "w_loc"
+                      "Identifier": "n_features"
                     },
                     "ctx": "Load"
                   }
